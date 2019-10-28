@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
+import styled from 'styled-components';
+import { rem } from './helpers/helpers';
 import './App.css';
+import Timer from './containers/Timer/Timer';
 
-function App() {
+import AppBar from '@material-ui/core/AppBar';
+
+const Title = styled.h1`
+  font-size: ${rem(24)};
+  text-align: center;
+`;
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <AppBar position="static">
+        <Title>Check your time</Title>
+      </AppBar>
+      <Timer />
+    </React.Fragment>
   );
 }
 
