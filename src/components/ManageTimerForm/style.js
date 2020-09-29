@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { rem } from '../../helpers/helpers';
 
-const ManageTaskFormStyle = styled.div`
+const ManageTimerFormStyle = styled.div`
     
 `;
 
@@ -22,4 +22,4 @@ const Input = styled.input`
 
 `;
 
-export { ManageTaskFormStyle, FormRow, Input, FormActions };
+export { ManageTimerFormStyle, FormRow, Input, FormActions };

@@ -1,85 +1,123 @@
-import React, { useState } from 'react';
-import * as moment from 'moment';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { addTask, updateTask, deleteTask } from '../../store/Tasks/actions';
-import { DATE_FORMAT, DATE_STATS_FORMAT } from '../../shared/config';
-import TaskList from '../../components/TaskList/index';
-import ManageTaskForm from '../../components/ManageTaskForm/index';
+import { createTimer,
+         getAllTimer,
+         updateTimer,
+         deleteTimer, 
+         setSelectedTimer,
+         createDaySession,  
+         updateDaySession, 
+         clearTimer } from '../../store/Timer/actions';
+import TimerList from '../../components/TimerList/index';
+import ManageTimerForm from '../../components/ManageTimerForm/index';
 import Modal from '../../components/Modal/index';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { TimerStyle, FabFixed } from './style';
 
-const Timer = ({tasks, addTask, updateTask, deleteTask }) => {
-    const [open, setOpen] = useState(false);
+const Timer = ({ timerList, 
+                 getAllTimer, 
+                 createTimer, 
+                 updateTimer, 
+                 deleteTimer, 
+                 selectedTimer, 
+                 setSelectedTimer, 
+                 createDaySession, 
+                 updateDaySession,  
+                 clearTimer }) => {
+    const [displayAddTimerModal, setDisplayAddTimerModal] = useState(false);
+    const [displayEditTimerModal, setDisplayEditTimerModal] = useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    useEffect(() => {
+        getAllTimer();
+        
+        return () => {
+            clearTimer();
+        }
+    }, [getAllTimer, clearTimer]);
+
+    const setDisplayAddTimerModalHandler = (display) => {
+        setDisplayAddTimerModal(display);
     };
     
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const taskChangeHandler = (action, data) => {
+    const timerChangeHandler = (action, data) => {
         switch(action) {
-            case 'update':
-                updateTask(data);
+            case 'newDaySession':
+                createDaySession(data);
+                break;
+            case 'updateDaySession':
+                updateDaySession(data);
                 break;
             case 'delete':
-                deleteTask(data);
+                deleteTimer(data);
                 break;
             default:
                 return null;
-        }
-        
+        }  
     }
 
-    const addTaskHandler = (task) => {
-        task.id = '_' + Math.random().toString(36).substr(2, 9);
-        task.created_date =  moment().format(DATE_FORMAT); 
-        task.start_date = null;
-        task.duration = 0;
-        task.stats = [
-            {
-                date: moment().format(DATE_STATS_FORMAT),
-                duration: 0
-            }
-        ]
-        addTask(task);
+    const addTimerHandler = (timer) => {
+        createTimer(timer);
+        setDisplayAddTimerModalHandler(false);
     }
 
-    // const deleteTaskHandler = (id) => {
-    //     deleteTask(id);
-    // }
+    const displayEditTimerModalHandler = (timer) => {
+        setDisplayEditTimerModal(true);
+        setSelectedTimer(timer); 
+    }
+
+    const closeEditTimerModal = () => {
+        setDisplayEditTimerModal(false);
+        setSelectedTimer(null);
+    }
+
+    const updateTimerHandler = (updatedTimer) => {
+        updatedTimer.id = selectedTimer.id;
+        updateTimer(updatedTimer);
+        closeEditTimerModal();
+    }
 
     return(
         <React.Fragment>
             <Tooltip title="Add new" aria-label="add">
-                <FabFixed color="secondary" onClick={handleClickOpen}>
+                <FabFixed color="secondary" onClick={() => setDisplayAddTimerModalHandler(true)}>
                     <AddIcon />
                 </FabFixed>
             </Tooltip>
+
             <TimerStyle>
-                <TaskList data={tasks} 
-                          onTaskChange={taskChangeHandler} />
+                <TimerList data={timerList} 
+                           onTimerChange={timerChangeHandler}
+                           displayEditTimerModal={displayEditTimerModalHandler} />
             </TimerStyle>
-            <Modal open={open} onClose={handleClose} data={{title: "Manage timer"}}>
-                <ManageTaskForm addTask={addTaskHandler}  />
+
+            <Modal open={displayAddTimerModal}
+                   onClose={() => setDisplayAddTimerModalHandler(false)}  
+                   data={{title: "Manage timer"}}>
+                <ManageTimerForm action={addTimerHandler}  />
+            </Modal>
+            <Modal open={displayEditTimerModal} onClose={() => closeEditTimerModal()} data={{title: "Edit timer"}}>
+                <ManageTimerForm action={updateTimerHandler} selectedTimer={selectedTimer}  />
             </Modal>
         </React.Fragment>
     );
 }
 
 const mapStateToProps = state => ({
-    tasks: state.tasks.taskList
+    timerList: state.timerReducer.timerList,
+    selectedTimer: state.timerReducer.selectedTimer
 });
 
 const mapDispatchToProps = {
-    addTask,
-    updateTask,
-    deleteTask
+    getAllTimer,
+    createTimer,
+    updateTimer,
+    deleteTimer,
+    setSelectedTimer,
+    createDaySession,
+    updateDaySession,
+    clearTimer
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);

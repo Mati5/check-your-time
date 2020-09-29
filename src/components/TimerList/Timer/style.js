@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { rem } from '../../../helpers/helpers';
 
 
-const TaskStyle = styled.div`
+const TimerStyle = styled.div`
     width: 20%;
     min-width: ${rem(370)};
     background-color: #fff;
@@ -81,14 +81,14 @@ const CurrentTime = styled.div`
 
 `;
 
-TaskStyle.Header = Header;
-TaskStyle.Title = Title;
-TaskStyle.Content = Content;
-TaskStyle.ActionButton = ActionButton;
-TaskStyle.Controls = Controls;
-TaskStyle.Details = Details;
-TaskStyle.ControlsList = ControlsList;
-TaskStyle.ControlsList.Element = Element;
-TaskStyle.CurrentTime = CurrentTime;
+TimerStyle.Header = Header;
+TimerStyle.Title = Title;
+TimerStyle.Content = Content;
+TimerStyle.ActionButton = ActionButton;
+TimerStyle.Controls = Controls;
+TimerStyle.Details = Details;
+TimerStyle.ControlsList = ControlsList;
+TimerStyle.ControlsList.Element = Element;
+TimerStyle.CurrentTime = CurrentTime;
 
-export { TaskStyle }
+export { TimerStyle }

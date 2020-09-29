@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { rem } from '../../helpers/helpers';
 
 
-const TaskListStyle = styled.div`
+const TimerListStyle = styled.div`
     background-color: #fff;
     width: 100%;
     height: 100%;
@@ -13,4 +13,4 @@ const TaskListStyle = styled.div`
     align-items: flex-start;
 `;
 
-export { TaskListStyle };
+export { TimerListStyle };

@@ -1,30 +1,26 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { ManageTaskFormStyle, FormRow, FormActions } from './style';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { ManageTimerFormStyle, FormRow, FormActions } from './style';
 
-const ManageTaskForm = (props) => {
+const ManageTimerForm = (props) => {
 
     return (
-        <ManageTaskFormStyle>
+        <ManageTimerFormStyle>
             <Formik
-                initialValues={{ name: '', description: '' }}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        console.log(values);
-                        props.addTask(values);
-                        setSubmitting(false);
-                    }, 400);
+                initialValues={{ 
+                    title: props.selectedTimer ? props.selectedTimer.title : '', 
+                    description: props.selectedTimer ? props.selectedTimer.description : '' 
                 }}
-                >
+                onSubmit={(values) => {
+                    props.action(values);      
+                }}>
                 {({
                     values,
                     handleChange,
                     handleSubmit,
-                    isSubmitting,
-                    /* and other goodies */
                 }) => (
                     <form onSubmit={handleSubmit}>
                         <FormRow>
@@ -32,9 +28,9 @@ const ManageTaskForm = (props) => {
                                 fullWidth
                                 id="standard-name"
                                 label="Name"
-                                value={values.name}
+                                value={values.title}
                                 onChange={handleChange}
-                                name="name"
+                                name="title"
                                 margin="normal" />
                         </FormRow>
                         <FormRow>
@@ -48,13 +44,13 @@ const ManageTaskForm = (props) => {
                                 margin="normal" />
                         </FormRow>
                         <FormActions>
-                            <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>Add</Button>
+                            <Button variant="contained" color="primary" type="submit">Add</Button>
                         </FormActions>
                     </form>
                 )}
                 </Formik>
-        </ManageTaskFormStyle>
+        </ManageTimerFormStyle>
     );
 }
 
-export default ManageTaskForm;
+export default ManageTimerForm;
