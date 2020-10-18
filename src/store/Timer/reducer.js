@@ -32,6 +32,14 @@ const updateTimer = (timerList, updatedTimer) => {
     return timerListUpdated;
 };
 
+const updateTimerTotalDuration = (timerList, data) => {
+    const timerListUpdated = [...timerList];
+    const index = timerListUpdated.findIndex(el => el.id === data.timerId);
+    timerListUpdated[index].totalDuration = data.totalDuration;
+
+    return timerListUpdated;
+}
+
 const timerReducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.GET_ALL_TIMER_SUCCESS:
@@ -65,6 +73,11 @@ const timerReducer = (state = initialState, action) => {
         case actionTypes.CLEAR_TIMER:
             return {
                 ...initialState
+            }
+        case actionTypes.UPDATE_TIMER_TOTAL_DURATION:
+            return {
+                ...state,
+                timerList: updateTimerTotalDuration(state.timerList, action.payload)
             }
         case actionTypes.UPDATE_DAY_SESSION_SUCCESS:
             return {

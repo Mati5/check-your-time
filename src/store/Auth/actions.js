@@ -23,7 +23,7 @@ export const register = async (formData) => {
         const response = await api.signUp(formData);
         const data = response.data;
         if(data.status === "success") {
-            history.push('/login');
+            history.push('/signin');
         }
     } catch(error) {
         console.log(error);

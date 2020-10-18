@@ -25,6 +25,11 @@ export const clearTimer = () => ({
     type: actionTypes.CLEAR_TIMER
 });
 
+export const updateTimerTotalDurationAction = (data) => ({
+    type: actionTypes.UPDATE_TIMER_TOTAL_DURATION,
+    payload: data
+})
+
 export const createDaySessionSuccess = (daySession) => ({
     type: actionTypes.CREATE_DAY_SESSION_SUCCESS,
     payload: daySession
@@ -93,13 +98,28 @@ export const updateTimer = (updatedTimer) => async (dispatch) => {
     }
 };
 
+export const prepareDataToUpdateTotalDuration = (result) => {
+    const timerId = result.daySession.TimerId;
+    const totalDuration = result.totalDuration;
+
+    const data = {
+        timerId: timerId,
+        totalDuration: totalDuration
+    }
+
+    return data;
+}
+
 export const createDaySession = (daySession) => async (dispatch) => {
     try {
         const response = await api.createDaySession(daySession);
         const data = response.data;
         if(data.status === "success") {
             const result = data.result;
-            dispatch(createDaySessionSuccess(result));
+            const updateTotalDurationPayload = prepareDataToUpdateTotalDuration(result);
+
+            dispatch(createDaySessionSuccess(result.daySession));
+            dispatch(updateTimerTotalDurationAction(updateTotalDurationPayload));
         }
     } catch(error) {
         console.log(error);
@@ -112,7 +132,10 @@ export const updateDaySession = (timer) => async (dispatch) => {
         const data = response.data;
         if(data.status === "success") {
             const result = data.result;
-            dispatch(updateDaySessionSuccess(result));
+            const updateTotalDurationPayload = prepareDataToUpdateTotalDuration(result);
+
+            dispatch(updateDaySessionSuccess(result.daySession));
+            dispatch(updateTimerTotalDurationAction(updateTotalDurationPayload));
         }
     } catch(error) {
         console.log(error);
