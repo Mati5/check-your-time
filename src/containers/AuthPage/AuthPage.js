@@ -14,10 +14,11 @@ const AuthPage = ({ loginError, login }) => {
     const location = useLocation();
 
     return(
-        location.pathname === "/signin" ?
+        location.pathname === "/signup" ?
+            <SignUp onSubmit={register} /> :
             <SignIn onSubmit={login}
-                    loginError={loginError} /> :
-            <SignUp onSubmit={register} />
+                    loginError={loginError} />
+            
             
     );
 }

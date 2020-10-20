@@ -1,5 +1,5 @@
 import React from 'react';
-import Timer from './Timer/index';
+import Timer from './Timer/Timer';
 import { TimerListStyle } from './style';
 
 const TimerList = (props) => {

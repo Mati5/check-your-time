@@ -7,7 +7,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import InfoIcon from '@material-ui/icons/Info';
+import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
@@ -104,6 +104,25 @@ const Timer = (props) => {
                 <TimerStyle.Title>
                     {props.timer.title}
                 </TimerStyle.Title>
+                <TimerStyle.Header.Right>
+                    <Tooltip title="Delete timer" aria-label="delete">
+                        <TimerStyle.Header.Btn type="button" onClick={() => deleteTimer()}>
+                            <DeleteIcon />
+                        </TimerStyle.Header.Btn>
+                    </Tooltip>
+                
+                    <Tooltip title="Edit timer" aria-label="edit">
+                        <TimerStyle.Header.Btn type="button" onClick={() => editTimer(props.timer)}>
+                            <EditIcon />
+                        </TimerStyle.Header.Btn>
+                    </Tooltip>
+                    <Tooltip title="Open timer" aria-label="info">
+                        <TimerStyle.Header.Btn type="button">
+                            <OpenInBrowserIcon />
+                        </TimerStyle.Header.Btn>
+                    </Tooltip>
+                </TimerStyle.Header.Right>
+                
             </TimerStyle.Header>
             {timerStarted && <LinearProgress />}
             <TimerStyle.Content>
@@ -115,24 +134,10 @@ const Timer = (props) => {
                                     {timerStarted ? 'Stop': 'Start'}
                                 </Fab>
                             </TimerStyle.ControlsList.Element>
-                            <TimerStyle.ControlsList.Element>
-                                <Tooltip title="Edit timer" aria-label="edit">
-                                    <Fab color="secondary" aria-label="edit" onClick={() => editTimer(props.timer)}>
-                                        <EditIcon />
-                                    </Fab>
-                                </Tooltip>
-                            </TimerStyle.ControlsList.Element>
-                            <TimerStyle.ControlsList.Element>
-                                <Tooltip title="Delete timer" aria-label="delete">
-                                    <Fab aria-label="delete" onClick={() => deleteTimer()}>
-                                        <DeleteIcon />
-                                    </Fab>
-                                </Tooltip>
-                            </TimerStyle.ControlsList.Element>
                             {/* <TimerStyle.ControlsList.Element>
                                 <Tooltip title="Open details" aria-label="details">
                                     <Fab style={{backgroundColor: "#24a0ed", color: "#fff"}}>
-                                        <InfoIcon />
+                                        Pom
                                     </Fab>
                                 </Tooltip>
                             </TimerStyle.ControlsList.Element> */}

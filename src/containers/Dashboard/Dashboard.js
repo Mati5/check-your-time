@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../store/Auth/actions';
+import TopBar from '../../components/Navigations/TopBar/TopBar';
+import { TopBarStyle } from '../../components/Navigations/TopBar/style';
+import DefaultList from '../../components/Navigations/DefaultList/DefaultList';
+import { DashboardStyle } from '../Dashboard/style';
+import Avatar from '../../components/Avatar/Avatar';
+import ProfileMenu from '../../components/Navigations/ProfileMenu/ProfileMenu';
+import DefaultAvatar from '../../assets/images/default-avatar.png';
 
-import Container from 'react-bootstrap/Container';
+const Home = React.lazy(() => import('../Home/Home'));
 const Timer = React.lazy(() => import('../Timer/Timer'));
 
 export const SingleTimer = () => {
@@ -14,32 +23,58 @@ export const SingleTimer = () => {
     );
 }
 
-const Dahboard = () => {
-    let { path, url } = useRouteMatch();
+const Dahboard = ({ logout }) => {
+    let { path } = useRouteMatch();
+
+    const [anchorElPMenu, setAnchorElPMenu] = useState(null);
+
+
+    const handleClosePMenu = () => {
+        setAnchorElPMenu(null);
+    };
+
+    const handleClickPMenu = event => {
+        setAnchorElPMenu(event.currentTarget);
+    };
+
 
     const routes = (
         <Switch>
-            <Route path="/" exact />   
-            <Route path={`${path}/timer`} exact component={Timer} />
+            <Route path={`${path}`} exact component={Home} />   
+            <Route path={`${path}/timer`} exact  component={Timer} />
             <Route path={`${path}/timer/:timerId`} component={SingleTimer} />       
         </Switch>
     );
 
     return(
         <React.Fragment>
-            <Container>
-                <h1>Dashboard</h1>
+            <TopBar>
+                <DefaultList />
+                <TopBarStyle.Title as={Link} to={'/'}>Check your time</TopBarStyle.Title>
+                <TopBarStyle.Right>
+                    <Avatar imgUrl={DefaultAvatar} 
+                            aria-controls="fade-menu" 
+                            aria-haspopup="true" 
+                            onClick={handleClickPMenu} />
 
-                <Link to={`${url}`}>Home</Link>
-                <Link to={`${url}/timer`}>Timer</Link>
-                <Link to={`${url}/timer/timer-6`}>Timer 1</Link>
-            </Container>
-            
-            {routes}
+                    <ProfileMenu anchorEl={anchorElPMenu} 
+                                 handleClose={handleClosePMenu} 
+                                 logout={logout} />
+                </TopBarStyle.Right>
+            </TopBar>
+            <DashboardStyle>
+                {routes}
+            </DashboardStyle>
         </React.Fragment>
     );
 }
 
+const mapStateToProps = state => ({
+    
+  });
 
+const mapDispatchToProps = {
+    logout,
+  };
 
-export default Dahboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dahboard);

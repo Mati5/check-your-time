@@ -8,9 +8,9 @@ import { createTimer,
          createDaySession,  
          updateDaySession, 
          clearTimer } from '../../store/Timer/actions';
-import TimerList from '../../components/TimerList/index';
-import ManageTimerForm from '../../components/ManageTimerForm/index';
-import Modal from '../../components/Modal/index';
+import TimerList from '../../components/TimerList/TimerList';
+import ManageTimerForm from '../../components/ManageTimerForm/ManageTimerForm';
+import Modal from '../../components/Modal/Modal';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 
